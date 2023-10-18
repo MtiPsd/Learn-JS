@@ -6,11 +6,35 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+    <title>Practice [filter users]</title>
   </head>
   <body>
-    <div id="root"></div>
+    <select name="countries" id="ct">
+      <option selected disabled hidden>Choose country</option>
+      <option value="Russia">Russia</option>
+      <option value="China">China</option>
+      <option value="France">France</option>
+      <option value="Iran">Iran</option>
+    </select>
 
-    <script src="app.js"></script>
+    <table id="user-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Country</th>
+          <th>BirthDate</th>
+          <th>Email</th>
+          <th>Gender</th>
+        </tr>
+      </thead>
+
+      <tbody id="user-table-body">
+        <!-- The table body will be populated by JavaScript -->
+      </tbody>
+    </table>
+
+    <script src="users.js"></script>
   </body>
 </html>
