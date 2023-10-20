@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      #todo-list {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        padding: 20px;
+        max-width: 400px;
+        margin-top: 20px;
+      }
+
+      h2 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      li.completed {
+        opacity: 0.7;
+        text-decoration: line-through;
+      }
+
+      button {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.2s;
+      }
+
+      #filter-buttons {
+        margin-top: 20px;
+      }
+
+      #filter-buttons button {
+        margin: 5px;
+        padding: 8px 16px;
+        border: none;
+        background-color: #333;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.2s;
+      }
+
+      #task {
+        font-size: 16px;
+        padding: 8px;
+        width: 80%;
+      }
+
+      #add-button {
+        font-size: 16px;
+        padding: 8px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-top: 15px;
+        width: 80%;
+      }
+
+      #clearAll:hover,
+      #add-button:hover,
+      button:hover {
+        background-color: #555;
+      }
+
+      /* Make the entire row clickable */
+      li {
+        cursor: pointer;
+      }
+
+      /* Add some space to the top of the list */
+      ul {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="todo-list">
+      <h2>Todo List</h2>
+      <input type="text" id="task" placeholder="Add a task..." />
+      <button id="add-button">Add</button>
+      <ul id="tasks"></ul>
+      <div id="filter-buttons">
+        <button id="all-button">All</button>
+        <button id="completed-button">Completed</button>
+        <button id="not-completed-button">Not Completed</button>
+      </div>
+      <button id="clearAll" style="display: none">Clear All</button>
+    </div>
+
+    <script>
+      const taskInput = document.getElementById("task");
+      const addButton = document.getElementById("add-button");
+      const taskList = document.getElementById("tasks");
+      const clearAllButton = document.getElementById("clearAll");
+      const allButton = document.getElementById("all-button");
+      const completedButton = document.getElementById(
+        "completed-button",
+      );
+      const notCompletedButton = document.getElementById(
+        "not-completed-button",
+      );
+
+      let currentFilter = "all";
+      let tasks = [];
+
+      const storedTasks = JSON.parse(localStorage.getItem("tasks"));
+      if (storedTasks) {
+        tasks = storedTasks;
+      }
+
+      function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      function addTask() {
+        const taskText = taskInput.value.trim();
+        if (taskText === "") return;
+
+        tasks.push({ text: taskText, completed: false });
+        saveTasks();
+        renderTasks();
+        taskInput.value = "";
+        clearAllButton.style.display = "block";
+      }
+
+      function renderTasks() {
+        taskList.innerHTML = "";
+
+        tasks.forEach((task, index) => {
+          if (
+            (currentFilter === "completed" && !task.completed) ||
+            (currentFilter === "not-completed" && task.completed)
+          ) {
+            return;
+          }
+
+          const li = document.createElement("li");
+          li.innerText = task.text;
+          li.classList.add(
+            task.completed ? "completed" : "not-completed",
+          );
+
+          li.addEventListener("click", () => toggleTask(index));
+
+          const deleteButton = document.createElement("button");
+          deleteButton.innerText = "Delete";
+          deleteButton.addEventListener("click", () =>
+            deleteTask(index),
+          );
+
+          li.appendChild(deleteButton);
+          taskList.appendChild(li);
+        });
+      }
+
+      function toggleTask(index) {
+        tasks[index].completed = !tasks[index].completed;
+        saveTasks();
+        renderTasks();
+      }
+
+      function deleteTask(index) {
+        tasks.splice(index, 1);
+        saveTasks();
+        renderTasks();
+      }
+
+      function clearAllTasks() {
+        tasks = [];
+        saveTasks();
+        renderTasks();
+        clearAllButton.style.display = "none";
+      }
+
+      function filterTasks(filter) {
+        currentFilter = filter;
+        renderTasks();
+      }
+
+      addButton.addEventListener("click", addTask);
+      taskInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+          addTask();
+        }
+      });
+
+      allButton.addEventListener("click", () => filterTasks("all"));
+      completedButton.addEventListener("click", () =>
+        filterTasks("completed"),
+      );
+      notCompletedButton.addEventListener("click", () =>
+        filterTasks("not-completed"),
+      );
+      clearAllButton.addEventListener("click", clearAllTasks);
+
+      // Initial rendering
+      renderTasks();
+    </script>
+  </body>
+</html>
