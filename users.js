@@ -253,3 +253,5 @@ function displayUsers(array) {
 function filterUsers(countryName) {
   displayUsers(users.filter((user) => user.country === countryName));
 }
+
+// sth
