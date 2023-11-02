@@ -1,33 +1,15 @@
-let list: Array<string | number | boolean> = [0, 1, "ef", true];
+function subtract(params: any): void {}
 
-const myList2: Array<string | number> = [];
+function setName(value: number) {
+  if (value) {
+    return "16";
+  }
 
-const newObject: Record<string, number> = {
-  "1": 4565,
-  "2": 987,
-  "3": 5,
-  "5": 864,
-};
-
-interface NewType {
-  name: string;
-  id: number;
-  items: string[];
-  age: number;
+  return 87;
 }
 
-interface Products {
-  id: number;
-  name: string;
-  price: string;
-  created_at: Date;
-  status: "canceled" | "delivered" | "ongoing";
+function Components(value1: number, value2: number = 45): number {
+  return value1 + value2;
 }
 
-enum Grade {
-  U,
-  C,
-  D,
-  B,
-  A,
-}
+const value: number[] = [];
