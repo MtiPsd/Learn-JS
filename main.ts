@@ -1,9 +1,33 @@
-let username = "Dave";
-let numbersLength: number = 15;
+let list: Array<string | number | boolean> = [0, 1, "ef", true];
 
-const lastName: string = "";
-const splittedName: Array<string> = lastName.split("/");
+const myList2: Array<string | number> = [];
 
-const element = document.getElementById("myID");
+const newObject: Record<string, number> = {
+  "1": 4565,
+  "2": 987,
+  "3": 5,
+  "5": 864,
+};
 
-element?.addEventListener("click", (e) => {});
+interface NewType {
+  name: string;
+  id: number;
+  items: string[];
+  age: number;
+}
+
+interface Products {
+  id: number;
+  name: string;
+  price: string;
+  created_at: Date;
+  status: "canceled" | "delivered" | "ongoing";
+}
+
+enum Grade {
+  U,
+  C,
+  D,
+  B,
+  A,
+}
