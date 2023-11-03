@@ -1,15 +1,20 @@
-function subtract(params: any): void {}
-
-function setName(value: number) {
-  if (value) {
-    return "16";
-  }
-
-  return 87;
+interface User {
+  name: string;
+  age: number;
+  address: string;
 }
 
-function Components(value1: number, value2: number = 45): number {
-  return value1 + value2;
-}
+///////////////////////////////////////////
 
-const value: number[] = [];
+// these code are the same
+
+type SecondType = Record<keyof User, number>;
+type OtherObject = {
+  [k in keyof User]: string;
+};
+///////////////////////////////////////////
+
+type ThirdType = User["age"];
+const thirdUser: ThirdType = 45;
+
+///////////////////////////////////////////
