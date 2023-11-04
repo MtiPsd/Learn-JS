@@ -65,3 +65,4 @@ class ListTemplate implements DOMList {
     });
   }
 }
+export default ListTemplate;
