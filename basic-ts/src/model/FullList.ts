@@ -53,6 +53,8 @@ class FullList implements List {
         itemObj._item,
         itemObj._checked,
       );
+
+      FullList.instance.addItem(newListItem);
     });
   }
 }
