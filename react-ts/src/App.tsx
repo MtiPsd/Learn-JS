@@ -1,24 +1,29 @@
-import { useState } from "react";
-import Counter from "./components/Counter";
-import Heading from "./components/Heading";
-import Section from "./components/Section";
-import List from "./components/List";
+import { useCallback, useEffect, useState, useRef } from "react";
+
+interface User {
+  id: number;
+  username: string;
+}
 
 function App() {
-  const [counter, setCounter] = useState<number>(1);
+  const [count, setCount] = useState<number>(0);
+  const [users, setUsers] = useState<Array<User> | null>(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    return () => console.log("unmounting ...");
+  }, [users]);
+
+  const addTwo = useCallback((e: any) => {
+    setCount(prev => prev + 2);
+  }, []);
 
   return (
     <>
-      <Heading title="Hello" />
-      <Section>This is My Children</Section>
-      <Counter setCounter={setCounter}>This is {counter}</Counter>
-
-      <List
-        items={["Coffee", "Words", "Tea"]}
-        render={(item: string) => (
-          <span className="gold">{item}</span>
-        )}
-      />
+      <h1>{count}</h1>
+      <button onClick={addTwo}>Add</button>
+      <input type="text" ref={inputRef} />
     </>
   );
 }
