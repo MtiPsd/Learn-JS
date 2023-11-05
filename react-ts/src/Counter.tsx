@@ -1,14 +1,48 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useReducer } from "react";
+
+const initialState = { count: 0 };
+
+const enum ACTION_TYPE {
+  INCREMENT,
+  DECREMENT,
+}
+
+type ReducerAction = {
+  type: ACTION_TYPE;
+};
+
+function reducer(
+  state: typeof initialState,
+  action: ReducerAction,
+): typeof initialState {
+  //
+  switch (action.type) {
+    case ACTION_TYPE.INCREMENT:
+      return {
+        ...state,
+        count: state.count + 1,
+      };
+
+    case ACTION_TYPE.DECREMENT:
+      return {
+        ...state,
+        count: state.count - 1,
+      };
+
+    default:
+      throw new Error();
+  }
+}
 
 type ChildrenType = {
   children: (num: number) => ReactNode;
 };
 
 const Counter = ({ children }: ChildrenType) => {
-  const [count, setCount] = useState<number>(1);
+  const [{ count }, dispatch] = useReducer(reducer, initialState);
 
-  const increment = () => setCount(prev => prev + 1);
-  const decrement = () => setCount(prev => prev - 1);
+  const increment = () => dispatch({ type: ACTION_TYPE.INCREMENT });
+  const decrement = () => dispatch({ type: ACTION_TYPE.DECREMENT });
 
   return (
     <>
