@@ -67,7 +67,7 @@ const CounterContext = createContext<Context>(initContext);
 function CounterProvider({ children }: Props): ReactElement {
   const [state, dispatch] = useReducer(reducer, initState);
 
-  // Wrap these with useCallback so it doesn not re created again
+  // Wrap these with useCallback so it does not re created again
   const increment = useCallback(
     () => dispatch({ type: ACTION_TYPE.INCREMENT }),
     [],
