@@ -1,57 +1,14 @@
-import { ChangeEvent, ReactNode, useReducer } from "react";
-
-const initialState = { count: 0, text: "" };
-
-const enum ACTION_TYPE {
-  INCREMENT,
-  DECREMENT,
-  NEW_INPUT,
-}
-
-type ReducerAction = {
-  type: ACTION_TYPE;
-  payload?: string;
-};
-
-function reducer(
-  state: typeof initialState,
-  action: ReducerAction,
-): typeof initialState {
-  //
-  switch (action.type) {
-    case ACTION_TYPE.INCREMENT:
-      return { ...state, count: state.count + 1 };
-
-    case ACTION_TYPE.DECREMENT:
-      return { ...state, count: state.count - 1 };
-
-    case ACTION_TYPE.NEW_INPUT:
-      return { ...state, text: action.payload || "" };
-
-    default:
-      throw new Error();
-  }
-}
+import { ReactNode } from "react";
+import { useCounter } from "./context/CounterContext";
 
 type ChildrenType = {
   children: (num: number) => ReactNode;
 };
 
-const Counter = ({ children }: ChildrenType) => {
-  const [{ count, text }, dispatch] = useReducer(
-    reducer,
-    initialState,
-  );
-
-  const increment = () => dispatch({ type: ACTION_TYPE.INCREMENT });
-  const decrement = () => dispatch({ type: ACTION_TYPE.DECREMENT });
-
-  function handleTextInput(e: ChangeEvent<HTMLInputElement>) {
-    dispatch({
-      type: ACTION_TYPE.NEW_INPUT,
-      payload: e.target.value,
-    });
-  }
+function Counter({ children }: ChildrenType) {
+  const { decrement, handleTextInput, increment, state } =
+    useCounter();
+  const { count, text } = state;
 
   return (
     <>
@@ -65,5 +22,5 @@ const Counter = ({ children }: ChildrenType) => {
       <h2>{text}</h2>
     </>
   );
-};
+}
 export default Counter;
