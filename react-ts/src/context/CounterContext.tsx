@@ -1,6 +1,6 @@
 import {
   ChangeEvent,
-  ReactNode,
+  ReactElement,
   createContext,
   useCallback,
   useContext,
@@ -8,37 +8,37 @@ import {
 } from "react";
 
 //////////////////// Types ////////////////////
-type StateType = {
+interface State {
   count: number;
   text: string;
-};
+}
 
-const enum ACTION_TYPE {
+enum ACTION_TYPE {
   INCREMENT,
   DECREMENT,
   NEW_INPUT,
 }
 
-type ReducerAction = {
+interface Action {
   type: ACTION_TYPE;
   payload?: string;
-};
+}
 
-type ChildrenType = {
-  children: ReactNode;
-};
+interface Props {
+  children: ReactElement | ReactElement[];
+}
 
-type ContextType = {
-  state: StateType;
+interface Context {
+  state: State;
   decrement: () => void;
   increment: () => void;
   handleTextInput: (e: ChangeEvent<HTMLInputElement>) => void;
-};
+}
 ///////////////////////////////////////////////
 
-const initState: StateType = { count: 0, text: "" };
+const initState: State = { count: 0, text: "" };
 
-function reducer(state: StateType, action: ReducerAction): StateType {
+function reducer(state: State, action: Action): State {
   //
   switch (action.type) {
     case ACTION_TYPE.INCREMENT:
@@ -55,16 +55,16 @@ function reducer(state: StateType, action: ReducerAction): StateType {
   }
 }
 
-const initContext: ContextType = {
+const initContext: Context = {
   state: initState,
   decrement: () => {},
   increment: () => {},
   handleTextInput: () => {},
 };
 
-const CounterContext = createContext<ContextType>(initContext);
+const CounterContext = createContext<Context>(initContext);
 
-function CounterProvider({ children }: ChildrenType): ReactNode {
+function CounterProvider({ children }: Props): ReactElement {
   const [state, dispatch] = useReducer(reducer, initState);
 
   // Wrap these with useCallback so it doesn not re created again
@@ -102,7 +102,7 @@ function CounterProvider({ children }: ChildrenType): ReactNode {
   );
 }
 
-function useCounter() {
+function useCounter(): Context {
   const context = useContext(CounterContext);
   if (context === undefined) {
     throw new Error(
